@@ -6,11 +6,11 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM) {
+  function MainController($scope, $http, ALBUM, Imagestore) {
     var vm = this;
 
     vm._album = ALBUM;
-    vm.album = null;
+    vm.album = Imagestore;
     vm.service = $http;
     vm.$scope = $scope;
 
@@ -21,6 +21,7 @@
         console.log('image loaded', response);
       });
     });
+
 
 
     vm.getAlbum();
@@ -37,11 +38,12 @@
   //   window.getSelection().removeAllRanges();
   // }
 
+
+
   MainController.prototype.getAlbum = function () {
     var vm = this;
     return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {
-      vm.album = response.data.data;
-      vm.album.images.reverse();
+      vm.album.set(response.data.data);
       return response.data;
     })
   };

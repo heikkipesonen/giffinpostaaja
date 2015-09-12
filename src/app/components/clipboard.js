@@ -12,20 +12,17 @@
 				el.addEventListener('touchstart', copyContent);
 
 				function copyContent(){
-					 var input = document.createElement('textarea');
+					var input = document.createElement('textarea');
 					document.body.appendChild(input);
-					input.value = el.innerHTML;
-					input.focus();
-					input.select();
-					document.execCommand('Copy');
+					try{
+						input.value = el.innerHTML;
+						input.focus();
+						input.select();
+						document.execCommand('Copy');
+					} catch (e) {
+						alert(el.innerHTML)
+					}
 					input.remove();
-					// var range = document.createRange();
-					// range.selectNodeContents(el);
-					// window.getSelection().addRange(range);
-					// var success = document.execCommand('copy');
-
-					// console.log(success)
-					// window.getSelection().removeAllRanges();
 				}
 			}
 		}

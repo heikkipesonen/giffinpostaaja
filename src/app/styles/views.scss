@@ -2,6 +2,7 @@ $view-transition : 0.4s;
 $toolbar-width: 64px;
 
 .view {
+	z-index: 1;
 	position: absolute;
 	top:0;
 	left:0;
@@ -25,6 +26,11 @@ $toolbar-width: 64px;
 		margin-bottom: 30px;
 	}
 }
+
+.view-child .view{
+	left:20%;
+}
+
 
 .view-header{
 	height: 0;
@@ -63,36 +69,68 @@ $toolbar-width: 64px;
 	-webkit-overflow-scrolling: touch;
 }
 
-.view-animate {
-	&.ng-animate {
+.view-animate.view-child {
+	transition: $view-transition !important;
+	&.ng-animate .view{
+		transform: translate3d(0,0,0);
 		transition: $view-transition !important;
 	}
 
 
-	&.ng-animate {
+	&.ng-animate .view{
 		transition: $view-transition !important;
 	}
 
-	&.ng-enter {
-		opacity:0 !important;
+	&.ng-enter .view{
+		transform: translate3d(100%,0,0) !important;
 		z-index: 2;
 	}
 
-	&.ng-enter-active {
-		opacity:1 !important;
+	&.ng-enter-active .view{
+		transform: translate3d(0,0,0) !important;
 	}
 
-	&.ng-leave {
-		opacity: 1 !important;
+	&.ng-leave .view{
+		transform: translate3d(0,0,0) !important;
 		z-index: 1;
 	}
 
-	&.ng-leave-active {
-		opacity: 0 !important;
+	&.ng-leave-active .view{
+		transform: translate3d(100%,0,0) !important;
 		z-index: 1;
 	}
-
 }
+
+// .view-animate {
+// 	&.ng-animate {
+// 		transform: translate3d(0,0,0);
+// 		transition: $view-transition !important;
+// 	}
+
+
+// 	&.ng-animate {
+// 		transition: $view-transition !important;
+// 	}
+
+// 	&.ng-enter {
+// 		transform: translate3d(100%,0,0) !important;
+// 		z-index: 2;
+// 	}
+
+// 	&.ng-enter-active {
+// 		transform: translate3d(0,0,0) !important;
+// 	}
+
+// 	&.ng-leave {
+// 		transform: translate3d(0,0,0) !important;
+// 		z-index: 1;
+// 	}
+
+// 	&.ng-leave-active {
+// 		transform: translate3d(100%,0,0) !important;
+// 		z-index: 1;
+// 	}
+// }
 
 .animation-direction-back .view-animate {
 	&.ng-animate {
