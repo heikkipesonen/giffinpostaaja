@@ -1,0 +1,76 @@
+header, .view-header-offset{
+	padding-top: 50px;
+	padding-bottom: 150px;
+}
+
+.view-header-offset{
+	opacity:0;
+}
+
+@mixin cols($count){
+	$width: 100%/$count;
+	width: $width;
+	padding-bottom: $width;
+}
+
+.image-wrapper{
+
+	font-size: 0;
+
+	.image{
+		position: relative;
+		display: inline-block;
+		height: 0;
+
+		@include cols(10);
+
+		@media (max-width: 1400px) {
+			@include cols(8);
+		}
+
+		@media (max-width: 1000px) {
+			@include cols(6);
+		}
+		@media (max-width: 700px) {
+			@include cols(4);
+		}
+		@media (max-width: 500px) {
+			@include cols(2);
+		}
+
+
+		img{
+			width: 100%;
+		}
+
+		background-color: #eee;
+		overflow: hidden;
+		opacity:0.8;
+
+		transition: 0.4s;
+		transition-property: opacity;
+
+		&:hover{
+			opacity:1;
+		}
+	}
+
+	.image-overlay{
+		position: absolute;
+		top:0;
+		left:0;
+		right: 0;
+		bottom: 0;
+		width: auto;
+		height: auto;
+	}
+}
+
+.image-embed{
+	position: absolute;
+	top:0;
+	left:0;
+	opacity:0;
+	right: 0;
+	bottom: 0;
+}
