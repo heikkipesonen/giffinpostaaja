@@ -1,10 +1,11 @@
 (function () {
 	'use strict';
 
-	function DropController($q, $scope){
+	function DropController($q, $scope, $filter){
 		var vm = this;
 		vm.$scope = $scope;
 		vm.$q = $q;
+		vm.$filter = $filter;
 		vm.allowedTypes = ['image/gif','image/jpg','image/png','image/jpeg'];
 		vm.maxFileSize = 10 * 1014 * 1024;
 	}
@@ -28,9 +29,38 @@
 		return d.promise;
 	};
 
+	DropController.prototype.findImage = function (string) {
+		var regex = new RegExp(/http\:\/\/i\.imgur\.com\/[A-Za-z0-9]+\.(jpg|png|gif)/);
+		var result = string.match(regex);
+		if (result){
+			return _.first(result);
+		} else {
+			return null;
+		}
+	};
+
 	DropController.prototype.handleDrop = function (evt) {
 		var vm = this;
 
+
+		var imageImports = [];
+
+		_.forEach(evt.dataTransfer.items, function (item) {
+			var d = vm.$q.defer();
+			imageImports.push(d.promise);
+
+			item.getAsString(function (result) {
+				var image = vm.findImage(result);
+				d.resolve(image);
+			});
+		});
+
+		vm.$q.all(imageImports).then(function (imageIds) {
+			var images = _.uniq(imageIds);
+			var idList = images.map(vm.$filter('imageId'));
+
+			vm.$scope.$emit('import.idlist', idList);
+		});
 
 		// var promises = [];
 		_.forEach(evt.dataTransfer.files, function (file) {

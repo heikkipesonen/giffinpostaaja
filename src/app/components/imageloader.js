@@ -11,6 +11,17 @@ angular.module('imageLoader', [])
     { name:'h', size:1024, proportions:true }
   ])
 
+  .filter('imageId', function () {
+	return function (url) {
+		var id = url.replace(/[sbmlh]{1}\.(jpg|gif|png)/,'');
+
+		id = id.replace('http://i.imgur.com/','');
+		id = id.replace(/\.(jpg|gif|png)/,'');
+
+		return id;
+	}
+  })
+
 	.filter('thumbnail', function () {
 		return function (url, size) {
 			return url.replace(/(\w+)(\.\w+)$/i, '$1'+size+'$2');
