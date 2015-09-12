@@ -27,19 +27,6 @@
     vm.getAlbum();
   }
 
-  // MainController.prototype.copyToClipboard = function (evt, image) {
-  //   var range = document.createRange();
-  //   var el = evt.srcElement.parentNode.querySelector('.image-embed');
-  //   range.selectNode(el);
-  //   console.log(el)
-  //   window.getSelection().addRange(range);
-  //   var success = document.execCommand('copy');
-
-  //   window.getSelection().removeAllRanges();
-  // }
-
-
-
   MainController.prototype.getAlbum = function () {
     var vm = this;
     return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {

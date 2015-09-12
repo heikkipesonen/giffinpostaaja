@@ -19,8 +19,8 @@
   resolve:{
     image:function (Imagestore, $stateParams, $q) {
       var d = $q.defer();
-      console.log(Imagestore);
       var image = _.find(Imagestore.images, { id:$stateParams.id });
+
       if (image){
         d.resolve(image);
       } else {
