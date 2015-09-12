@@ -6,25 +6,27 @@
     <p>Upload with drag & drop</p>
   </header>
 
-  <section name="image-list" class="view image-wrapper" scroll-y>
-    <div class="view-header-offset col-xs-12 text-center">
-      <h1><strong>gihvin</strong></h1>
-      <h3>postaajan apu kirja</h3>
-      <p>Upload with drag & drop</p>
-    </div>
-
-    <div class="image"
-      ng-repeat="(imageIndex, image) in main.album.images track by image.id">
-
-      <img image-loader="image" size="b">
-
-      <div class="image-overlay ripple">
-        <span copy-clipboard class="image-embed" ng-bind="'[img]'+image.link+'[/img]'"></span>
+  <section name="image-list" class="view" scroll-y>
+    <div class="row">
+      <div class="view-header-offset col-xs-12 text-center">
+        <h1><strong>gihvin</strong></h1>
+        <h3>postaajan apu kirja</h3>
+        <p>Upload with drag & drop</p>
       </div>
+      <div class="image-wrapper col-xs-12">
+        <div class="image"
+          ng-repeat="(imageIndex, image) in main.album.images track by image.id">
 
-      <!-- <a ui-sref="root.image({id:image.id})">edit</a> -->
+          <img image-loader="image" size="b">
+
+          <div class="image-overlay ripple">
+            <span copy-clipboard class="image-embed" ng-bind="'[img]'+image.link+'[/img]'"></span>
+          </div>
+
+          <!-- <a ui-sref="root.image({id:image.id})">edit</a> -->
+        </div>
+      </div>
     </div>
-
   </section>
 
   <ui-view class="view-animate view-child"></ui-view>
