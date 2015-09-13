@@ -20,15 +20,25 @@
           <span ng-bind="tag"></span>
         </div>
       </div> -->
-      <div class="image-wrapper col-xs-12">
 
-        <div class="image"
+      <div class="image-import col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4 ">
+        <h4 class="text-center">imgur import</h4>
+        <div class="input-container">
+          <input
+            ng-blur="main.importFromString(main.importString)"
+            type="text"
+            name="name"
+            ng-model="main.importString"
+            ng-class="{'has-value' : main.importString}">
+          <label>link to image</label>
+        </div>
+      </div>
+      <div class="image-wrapper col-xs-12">
+        <div class="image-container"
+          ng-right-click="main.showImage(image)"
           ng-repeat="(imageIndex, image) in main.album.images track by image.id">
           <img image-loader="image" size="b">
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
-
-          <i ui-sref="root.image({id:image.id})" class="ion-edit"></i>
-
         </div>
       </div>
     </div>

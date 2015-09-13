@@ -1,5 +1,6 @@
+<div class="view-overlay" ui-sref="root"></div>
 <div class="view" scroll-y>
-	<div class="image-info col-xs-12">
+	<div class="image-info-wrapper col-xs-12">
 			<div class="row image-preview-wrapper">
 				<div class="col-xs-12 image-preview" image-loader="image.model"></div>
 			</div>
@@ -16,6 +17,29 @@
 					</div>
 				</div>
 
+			</div>
+
+			<div class="col-xs-12">
+				<h3>image links</h3>
+				<table class="image-info">
+					<tr class="info-label"
+					ng-if="::image.model[link]"
+					ng-repeat="(linkIndex, link) in ::image.displayedLinks track by linkIndex">
+						<td class="property">{{::link}}</td>
+						<td class="value">{{::image.model[link]}}</td>
+					</tr>
+				</table>
+			</div>
+
+
+			<div class="col-xs-12">
+				<h3>image info</h3>
+				<table class="image-info">
+					<tr class="info-label" ng-repeat="(key, value) in image.model track by key" ng-if="key && value">
+						<td class="property">{{::key}}</td>
+						<td class="value">{{::value}}</td>
+					</tr>
+				</table>
 			</div>
 	</div>
 </div>

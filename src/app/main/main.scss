@@ -1,5 +1,7 @@
+$hilight-color: #FF9D43;
+
 header, .view-header-offset{
-	padding-top: 70px;
+	padding-top: 100px;
 	padding-bottom: 0px;
 
 	h1{
@@ -33,11 +35,21 @@ header, .view-header-offset{
 // 	z-index: 1;
 // }
 
+.view-overlay{
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.3);
+}
+
 .view.child-visible{
-	right: 40%;
-	@media (max-width: 1750px){
-		right: 700px;
-	}
+	// right: 40%;
+	// @media (max-width: 1750px){
+	// 	right: 700px;
+	// }
 	// filter: blur(20px);
 }
 .view-child .view{
@@ -46,18 +58,13 @@ header, .view-header-offset{
 	min-width: 700px;
 }
 .view-child .view{
-	background-color: rgba(255,255,255,0.85);
+	background-color: rgba(255,255,255,1);
 	box-shadow: 0px 0px 50px 0px rgba(0,0,0,0.2);
 }
 
-@mixin cols($count){
-	$width: 100%/$count;
-	width: $width;
-	padding-bottom: $width;
-}
 
 .gradient-top{
-	height: 70px;
+	height: 100px;
 	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1)));
 	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
@@ -67,31 +74,26 @@ header, .view-header-offset{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
 }
 
-.image-tags{
+.image-tags, .image-import{
 	padding-top: 0px;
 	padding-bottom: 30px;
 	background-color: white;
 }
 
+@mixin cols($count){
+	height: 0;
+	$width: 100%/$count;
+	width: $width;
+	padding-bottom: $width;
+}
 
 .image-wrapper{
 	font-size: 0;
 	background-color: white;
 
-	.image{
-		font-size: 10pt;
+	.image-container{
 		position: relative;
 		display: inline-block;
-		vertical-align: top;
-		height: 0;
-
-		a{
-			position: absolute;
-			bottom: 0;
-			left:0;
-			width: 100%;
-			text-align: center;
-		}
 
 		@include cols(10);
 
@@ -109,44 +111,29 @@ header, .view-header-offset{
 			@include cols(2);
 		}
 
+		opacity:0.8;
+		transition: 0.4s;
+		transition-property: opacity;
+		font-size: 10pt;
+		position: relative;
+		vertical-align: top;
+		overflow: hidden;
+		background-color: #eee;
 
 		img{
 			width: 100%;
 		}
 
-		background-color: #eee;
-		overflow: hidden;
-		opacity:0.8;
-
-		transition: 0.4s;
-		transition-property: opacity;
-
 		&:hover{
 			opacity:1;
-			i{
-				opacity:1;
-			}
 
-			.image-overlay{
-				background-color: rgba(255, 161, 95, 0.72);
+			.image-edit{
+				height: 30px;
 			}
 		}
+	}
 
-		i{
-			position: absolute;
-			bottom: 10px;
-			right:10px;
-			opacity:0;
-			text-align: center;
-			display: inline-block;
-			background-color: white;
-			border-radius: 50%;
-			width: 25px;
-			height: 25px;
-			line-height: 25px;
-			font-size: 15px;
-			color: black;
-		}
+	.image-content{
 	}
 
 	.image-overlay{
@@ -160,17 +147,28 @@ header, .view-header-offset{
 		transition: 0.4s;
 		text-align: center;
 	}
+
+	.image-edit{
+		z-index: 10;
+		position: absolute;
+		bottom: 0%;
+		left: 0;
+		width: 100%;
+		height: 0px;
+		overflow: hidden;
+		font-size: 16px;
+		line-height: 30px;
+		text-align: center;
+		background-color: white;
+		transition: 0.4s;
+
+		i:hover{
+			color: $hilight-color;
+		}
+	}
 }
 
 [copy-clipboard], [ui-sref]{
 	cursor: pointer;
 }
 
-.image-embed{
-	position: absolute;
-	top:0;
-	left:0;
-	opacity:0;
-	right: 0;
-	bottom: 0;
-}

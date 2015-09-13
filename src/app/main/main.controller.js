@@ -6,14 +6,17 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM, Imagestore, $state) {
+  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter) {
     var vm = this;
 
     vm._album = ALBUM;
     vm.album = Imagestore;
     vm.service = $http;
     vm.$scope = $scope;
+    vm.$state = $state;
+    vm.$filter = $filter;
     vm.childVisible = false;
+    vm.importString = null;
 
     vm.$scope.$on('import.idlist', function (evt, data) {
       evt.stopPropagation();
@@ -35,6 +38,29 @@
     vm.getAlbum();
   }
 
+  MainController.prototype.importFromString = function (string) {
+    var vm = this;
+    if (string){
+      var id = vm.$filter('imageId')(string);
+      console.log(id);
+      if (id && /^[A-Za-z0-9]{3,12}$/.test(id)){
+
+        vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
+          vm.importString = null;
+          vm.addImage(response.data.data);
+          vm.addAlbumImages([id]);
+        }, function () {
+          alert('voi perde teiän kanssa');
+        });
+      }
+    }
+  };
+
+  MainController.prototype.showImage = function (image) {
+    var vm = this;
+    vm.$state.go('root.image', {id:image.id});
+  };
+
   MainController.prototype.getAlbum = function () {
     var vm = this;
     return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {
@@ -43,11 +69,16 @@
     })
   };
 
-  MainController.prototype.importImages = function (idlist) {
+  MainController.prototype.addAlbumImages = function (idlist) {
     var vm = this;
     return vm.service.put('https://api.imgur.com/3/album/'+vm._album.hash+'/add', {
       ids:idlist
-    }).then(function (response) {
+    });
+  };
+
+  MainController.prototype.importImages = function (idlist) {
+    var vm = this;
+    return vm.addAlbumImages(idlist).then(function (response) {
       if (response.data.status === 200){
         _.forEach(idlist, function (id) {
           vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {

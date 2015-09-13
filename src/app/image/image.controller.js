@@ -11,6 +11,8 @@
 		vm.updateInterval = 1000;
 		vm.disabled = false;
 
+		vm.displayedLinks = ['link','mp4','gifv','webm'];
+
 		vm.tagString = vm.model.title;
 		vm.tags = vm.store.getTags(vm.tagString);
 

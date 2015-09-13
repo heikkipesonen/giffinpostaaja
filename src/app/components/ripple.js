@@ -18,7 +18,9 @@
 					el.appendChild(ripple);
 				}
 
-				el.addEventListener('click', function (evt) {
+				function handleClick(evt) {
+					evt.preventDefault();
+
 					el.classList.remove('ripple-active');
 					el.classList.add('ripple-active');
 					ripple.style.top = evt.layerY + 'px';
@@ -31,7 +33,10 @@
 					timer = setTimeout(function () {
 						el.classList.remove('ripple-active');
 					}, 500);
-				});
+				}
+
+				el.addEventListener('click', handleClick);
+				el.addEventListener('contextmenu', handleClick);
 			}
 		}
 	})

@@ -1,5 +1,5 @@
 .image-preview-wrapper{
-	background-color: #aaa;
+	background-color: #444;
 }
 
 .image-preview{
@@ -19,5 +19,28 @@
 		display: inline-block;
 		background-color: #eee;
 		padding: 5px 15px;
+	}
+}
+
+.image-info-wrapper{
+	padding-bottom: 50px;
+}
+
+.image-info{
+	table-layout: fixed;
+	width: 100%;
+
+	tr:nth-child(even){
+		background-color: #f7f7f7;
+	}
+
+	td{
+		padding: 5px;
+	}
+
+	.property{
+		width: 150px;
+		text-align: right;
+		font-weight: 400;
 	}
 }

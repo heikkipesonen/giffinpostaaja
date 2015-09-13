@@ -25,7 +25,6 @@
 		console.log(vm.tags)
 	};
 
-
 	Imagestore.prototype.updateImageTags = function (image) {
 		var vm = this;
 		if (image.can_update && image.deletehash){

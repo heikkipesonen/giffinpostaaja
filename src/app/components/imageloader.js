@@ -13,12 +13,17 @@ angular.module('imageLoader', [])
 
   .filter('imageId', function () {
 	return function (url) {
-		var id = url.replace(/[sbmlh]{1}\.(jpg|gif|png)/,'');
 
-		id = id.replace('http://i.imgur.com/','');
-		id = id.replace(/\.(jpg|gif|png)/,'');
+		if (url.indexOf('http://i.imgur.com/') > -1){
+			var id = url.replace(/[sbmlh]{1}\.(jpg|gif|png)/,'');
+			id = id.replace('http://i.imgur.com/','');
+			id = id.replace(/\.(jpg|gif|png|webm|gifv|mp4)/,'');
 
-		return id;
+			return id;
+		} else {
+			return null;
+		}
+
 	}
   })
 

@@ -1,4 +1,4 @@
-$view-transition : 0.4s;
+$view-transition : 0.3s;
 $toolbar-width: 64px;
 
 .view {
@@ -67,8 +67,42 @@ $toolbar-width: 64px;
 	-webkit-overflow-scrolling: touch;
 }
 
+.view-animate .view-overlay{
+
+}
+
 .view-animate.view-child {
 	transition: $view-transition !important;
+
+	&.ng-animate .view-overlay{
+		opacity:1;
+		transition: $view-transition !important;
+	}
+
+
+	&.ng-animate .view-overlay{
+		transition: $view-transition !important;
+	}
+
+	&.ng-enter .view-overlay{
+		opacity:0 !important;
+		z-index: 2;
+	}
+
+	&.ng-enter-active .view-overlay{
+		opacity:1 !important;
+	}
+
+	&.ng-leave .view-overlay{
+		opacity:1 !important;
+		z-index: 1;
+	}
+
+	&.ng-leave-active .view-overlay{
+		opacity:0 !important;
+		z-index: 1;
+	}
+
 	&.ng-animate .view{
 		transform: translate3d(0,0,0);
 		transition: $view-transition !important;
