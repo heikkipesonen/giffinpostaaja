@@ -1,4 +1,4 @@
-<div class="view" layout="column" drop-input>
+<div class="view" layout="column" drop-input ng-class="{'child-visible' : main.childVisible}">
 
   <header class="col-xs-12 text-center">
     <h1><strong><span style="color:#FF9D43">gi</span>hvin</strong></h1>
@@ -13,19 +13,26 @@
         <h3>postaajan apu kirja</h3>
         <p>Upload with drag & drop</p>
       </div>
+
+      <div class="gradient-top col-xs-12"></div>
+<!--       <div class="image-tags tags-list col-xs-12 text-center">
+        <div class="tag" ng-repeat="(tagIndex, tag) in main.album.tags track by tagIndex">
+          <span ng-bind="tag"></span>
+        </div>
+      </div> -->
       <div class="image-wrapper col-xs-12">
+
         <div class="image"
           ng-repeat="(imageIndex, image) in main.album.images track by image.id">
-
           <img image-loader="image" size="b">
+          <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
 
-          <div class="image-overlay ripple">
-            <span copy-clipboard class="image-embed" ng-bind="'[img]'+image.link+'[/img]'"></span>
-          </div>
+          <i ui-sref="root.image({id:image.id})" class="ion-edit"></i>
+
         </div>
       </div>
     </div>
   </section>
-
-  <ui-view class="view-animate view-child"></ui-view>
 </div>
+
+<ui-view class="view-animate view-child"></ui-view>

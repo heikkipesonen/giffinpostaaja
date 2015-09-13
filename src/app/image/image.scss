@@ -1,0 +1,23 @@
+.image-preview-wrapper{
+	background-color: #aaa;
+}
+
+.image-preview{
+	position: relative;
+	height: 400px;
+	text-align: center;
+	background-size: contain !important;
+}
+
+.tags-list{
+	margin-left: -5px;
+	margin-right: -5px;
+
+	.tag{
+		font-weight: 200;
+		margin: 5px;
+		display: inline-block;
+		background-color: #eee;
+		padding: 5px 15px;
+	}
+}

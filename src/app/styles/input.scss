@@ -7,7 +7,7 @@ $hilight-color : #d00 !default;
 	padding-bottom: 20px;
 
 	input{
-		padding: 15px 0px 5px 0px;
+		padding: 20px 0px 5px 0px;
 		width: 100%;
 		border-bottom: 1px solid #444;
 
@@ -64,7 +64,7 @@ input:hover + label{
 	color: $hilight-color;
 }
 
-input:focus + label, input:active + label, input.has-value + label, input.ng-dirty + label{
+input:focus + label, input:active + label, input.has-value + label{
 	top:0;
 	transform: scale(0.8);
 	color: $hilight-color;

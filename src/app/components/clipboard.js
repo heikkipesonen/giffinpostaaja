@@ -15,7 +15,7 @@
 					var input = document.createElement('textarea');
 					document.body.appendChild(input);
 					try{
-						input.value = el.innerHTML;
+						input.value = el.getAttribute('data-text');
 						input.focus();
 						input.select();
 						document.execCommand('Copy');

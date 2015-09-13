@@ -1,3 +1,21 @@
 <div class="view" scroll-y>
+	<div class="image-info col-xs-12">
+			<div class="row image-preview-wrapper">
+				<div class="col-xs-12 image-preview" image-loader="image.model"></div>
+			</div>
 
+			<div class="input-wrapper col-xs-12 col-md-12" ng-if="image.model.can_update">
+				<div class="input-container">
+					<input ng-blur="image.saveTags()" ng-disabled="{{image.disabled}}" type="text" name="name" ng-model="image.tagString" ng-class="{'has-value' : image.model.title}">
+					<label>Tags</label>
+				</div>
+
+				<div class="tags-list">
+					<div class="tag" ng-repeat="(tagIndex, tag) in image.tags track by tagIndex">
+						<span ng-bind="tag"></span>
+					</div>
+				</div>
+
+			</div>
+	</div>
 </div>

@@ -6,13 +6,14 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM, Imagestore) {
+  function MainController($scope, $http, ALBUM, Imagestore, $state) {
     var vm = this;
 
     vm._album = ALBUM;
     vm.album = Imagestore;
     vm.service = $http;
     vm.$scope = $scope;
+    vm.childVisible = false;
 
     vm.$scope.$on('import.idlist', function (evt, data) {
       evt.stopPropagation();
@@ -25,6 +26,10 @@
       vm.upload(data).then(function (response) {
         console.log('image loaded', response);
       });
+    });
+
+    vm.$scope.$on('$stateChangeStart', function (f,to) {
+      vm.childVisible = to.name === 'root.image';
     });
 
     vm.getAlbum();
@@ -74,7 +79,7 @@
 
         return vm.service.post('https://api.imgur.com/3/image/'+imageData.deletehash, {
           description: '#'+imageData.deletehash+'#',
-          title:'op,faget,is,true'
+          title:''
         }).then(function (updateResponse) {
           return response.data;
         });
