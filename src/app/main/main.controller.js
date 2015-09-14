@@ -79,7 +79,9 @@
   MainController.prototype.removeAlbumImages = function (idlist) {
     var vm = this;
     return vm.service.delete('https://api.imgur.com/3/album/'+vm._album.hash+'/remove_images', {
-      ids:idlist
+      params: {
+        ids: idlist
+      }
     }).then(function (response) {
       if (response.data.status === 200){
         _.forEach(idlist, function (id) {
