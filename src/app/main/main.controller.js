@@ -6,11 +6,14 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter) {
+  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter, $firebaseObject) {
     var vm = this;
+    vm.ref = new Firebase('http://sweltering-fire-8163.firebaseIO.com');
+    vm.data = $firebaseObject(vm.ref);
 
     vm._album = ALBUM;
     vm.album = Imagestore;
+
     vm.service = $http;
     vm.$scope = $scope;
     vm.$state = $state;
@@ -64,6 +67,7 @@
   MainController.prototype.getAlbum = function () {
     var vm = this;
     return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {
+      console.log(response.data.data);
       vm.album.set(response.data.data);
       return response.data;
     })

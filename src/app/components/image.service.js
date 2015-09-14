@@ -16,9 +16,9 @@
 			}).flatten()
 			.compact()
 			.groupBy()
-			.sortBy(function(group){
+			.sortBy(function (group) {
 				return -group.length;
-			}).map(function(tags){ return _.first(tags); })
+			}).map(function (tags) { return _.first(tags); })
 			.slice(0,10)
 			.valueOf();
 
@@ -28,11 +28,11 @@
 	Imagestore.prototype.updateImageTags = function (image) {
 		var vm = this;
 		if (image.can_update && image.deletehash){
-	    return vm.service.post('https://api.imgur.com/3/image/'+image.deletehash, {
-	      title:vm.getTagString(image)
-	    }).then(function (updateResponse) {
-	      return updateResponse.data;
-	    });
+			return vm.service.post('https://api.imgur.com/3/image/'+image.deletehash, {
+				title:vm.getTagString(image)
+			}).then(function (updateResponse) {
+				return updateResponse.data;
+			});
 		} else {
 			var d = vm.$q.defer();
 			d.reject(null);
@@ -57,7 +57,7 @@
 
 	Imagestore.prototype.getTags = function (string) {
 		var tags = string ? string.replace(/[^,\.\:\;\ a-zA-ZöäÖÄåÅ0-9]/g,'').split(/[\,\;\.\: ]{1}/) : [];
-		return _.compact( _.map(_.uniq(tags), function (tag) { return _.trim(tag); }) );
+		return _.compact(_.map(_.uniq(tags), function (tag) { return _.trim(tag); }));
 	};
 
 	Imagestore.prototype.parseImages = function () {

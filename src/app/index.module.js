@@ -13,6 +13,7 @@
 		'imageLoader',
 		'scroll',
 		'ripple',
-		'clipboard']);
+		'clipboard',
+		'firebase']);
 
 })();
