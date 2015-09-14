@@ -76,6 +76,21 @@
     });
   };
 
+  MainController.prototype.removeAlbumImages = function (idlist) {
+    var vm = this;
+    return vm.service.delete('https://api.imgur.com/3/album/'+vm._album.hash+'/remove_images', {
+      ids:idlist
+    }).then(function (response) {
+      if (response.data.status === 200){
+        _.forEach(idlist, function (id) {
+          _.remove(vm.album.images, {id: id});
+        });
+      } else {
+        alert('pere');
+      }
+    })
+  };
+
   MainController.prototype.importImages = function (idlist) {
     var vm = this;
     return vm.addAlbumImages(idlist).then(function (response) {

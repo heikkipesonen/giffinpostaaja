@@ -22,7 +22,16 @@
 	}
 }
 
+.image-tools{
+	font-size: 32px;
+
+	.tool{
+		line-height: 32px;
+	}
+}
+
 .image-info-wrapper{
+	position: relative;
 	padding-bottom: 50px;
 }
 
@@ -43,4 +52,9 @@
 		text-align: right;
 		font-weight: 400;
 	}
+}
+
+.padding{
+	padding-top: 15px;
+	padding-bottom: 15px;
 }

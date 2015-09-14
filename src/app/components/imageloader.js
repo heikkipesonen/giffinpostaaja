@@ -71,6 +71,7 @@ angular.module('imageLoader', [])
 						};
 
 					img.onerror = function () {
+							el.classList.add('image-error');
 							loadComplete();
 						};
 

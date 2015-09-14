@@ -9,12 +9,15 @@
 
 
 
-
 	&.image-loading{
 		opacity:0;
 	}
 
 	&.image-ready{
 		opacity:1;
+
+		&.image-error{
+			opacity:0;
+		}
 	}
 }

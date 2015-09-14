@@ -1,9 +1,11 @@
 <div class="view-overlay" ui-sref="root"></div>
 <div class="view" scroll-y>
+	<div class="image-preview-wrapper col-xs-12 no-gutter">
+		<div class="image-preview" image-loader="image.model"></div>
+	</div>
+
 	<div class="image-info-wrapper col-xs-12">
-			<div class="row image-preview-wrapper">
-				<div class="col-xs-12 image-preview" image-loader="image.model"></div>
-			</div>
+
 
 			<div class="input-wrapper col-xs-12 col-md-12" ng-if="image.model.can_update">
 				<div class="input-container">
@@ -41,5 +43,13 @@
 					</tr>
 				</table>
 			</div>
+
+<!-- 			<div class="col-xs-12 padding image-tools text-center">
+				<button class="button ghost tool" ng-click="image.deleteFromAlbum()">
+					<i class="ion-ios-trash-outline"></i>
+				</button><button class="button ghost tool" disabled="true">
+					<i class="ion-ios-close-outline"></i>
+				</button>
+			</div> -->
 	</div>
 </div>

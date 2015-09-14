@@ -39,6 +39,9 @@
           ng-repeat="(imageIndex, image) in main.album.images track by image.id">
           <img image-loader="image" size="b">
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
+          <div class="image-actions">
+            <i class="ion-ios-trash-outline" ng-click="main.removeAlbumImages([image.id])"></i>
+          </div>
         </div>
       </div>
     </div>

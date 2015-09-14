@@ -105,6 +105,42 @@ textarea{
 	outline: none;
 	border:none;
 	transition: 0.4s;
+	margin:0;
+
+	&.ghost{
+		background-color: transparent;
+		border: 1px solid $hilight-color;
+		color: $hilight-color;
+
+		&:hover, &:focus, &:active{
+			border: 1px solid $hilight-color;
+			background-color: $hilight-color;
+			color: white;
+		}
+
+		&[disabled="true"]{
+			border: 1px solid desaturate($hilight-color, 100);
+			color: desaturate($hilight-color, 100);
+			background-color: transparent;
+			i{
+				opacity:0.5;
+			}
+			&:hover, &:focus, &:active{
+				border: 1px solid desaturate($hilight-color, 100);
+				background-color: transparent;
+			}
+		}
+	}
+
+	&[disabled="true"]{
+		i{
+			opacity:0.5;
+		}
+		background-color: desaturate($hilight-color, 100);
+		&:hover, &:focus, &:active{
+			background-color: desaturate($hilight-color, 100);
+		}
+	}
 
 	&:hover, &:focus, &:active{
 		outline:none;

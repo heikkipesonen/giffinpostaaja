@@ -166,9 +166,35 @@ header, .view-header-offset{
 			color: $hilight-color;
 		}
 	}
+
+	.image-actions{
+		position: absolute;
+		top:0;
+		left:0;
+		padding-left: 10px;
+		padding-right: 10px;
+		width: 100%;
+		font-size: 24px;
+		text-align: right;
+
+		i{
+			display: inline-block;
+			width: 24px;
+			height: 24px;
+			text-align: center;
+			border-radius: 50%;
+			line-height: 24px;
+			transition: 0.3s;
+			color: $hilight-color;
+
+			&:hover{
+				background-color: white;
+			}
+		}
+	}
 }
 
-[copy-clipboard], [ui-sref]{
+[copy-clipboard], [ui-sref], [ng-click]{
 	cursor: pointer;
 }
 
