@@ -1,4 +1,4 @@
-<div class="view" layout="column" drop-input ng-class="{'child-visible' : main.childVisible}">
+<div class="view" layout="column" drop-input on-file-read="main.importFile(data)" ng-class="{'child-visible' : main.childVisible}">
 
   <header class="col-xs-12 text-center">
     <h1><strong><span style="color:#FF9D43">gi</span>hvin</strong></h1>
@@ -30,17 +30,23 @@
       </div> -->
       <div class="image-wrapper col-xs-12">
         <div class="image-container"
+          draggable="true"
+          drag-start="main.imageDragStart(image)"
+          drag-end="main.imageDragEnd(image)"
           ng-right-click="main.showImage(image)"
           ng-repeat="(imageIndex, image) in main.images track by image.$id">
           <img image-loader="image" size="b">
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
-          <div class="image-actions">
-            <i class="ion-ios-trash-outline" ng-click="main.removeImage(image)"></i>
-          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <div class="toolbar" ng-class="{'visible' : main.showTools}">
+    <div class="tool" droppable="true" on-drop="main.removeImage(main.dragImage)">
+      <i class="ion-ios-trash-outline"></i>
+    </div>
+  </div>
 </div>
 
 <ui-view class="view-animate view-child"></ui-view>

@@ -41,52 +41,49 @@
 
 	DropController.prototype.handleDrop = function (evt) {
 		var vm = this;
-
-
 		var imageImports = [];
 
-		_.forEach(evt.dataTransfer.items, function (item) {
-			var d = vm.$q.defer();
-			imageImports.push(d.promise);
 
-			item.getAsString(function (result) {
-				var image = vm.findImage(result);
-				d.resolve(image);
+		_.forEach(evt.dataTransfer.items, function (item) {
+				var d = vm.$q.defer();
+				imageImports.push(d.promise);
+
+				item.getAsString(function (result) {
+					var image = vm.findImage(result);
+					d.resolve(image);
+				});
 			});
-		});
 
 		vm.$q.all(imageImports).then(function (imageIds) {
-			var images = _.uniq(imageIds);
-			var idList = images.map(vm.$filter('imageId'));
+				var images = _.uniq(imageIds);
+				var idList = images.map(vm.$filter('imageId'));
+				vm.$scope.onFileRead({ data:{ type:'text',data:idList } });
+			});
 
-			vm.$scope.$emit('import.idlist', idList);
-		});
-
-		// var promises = [];
 		_.forEach(evt.dataTransfer.files, function (file) {
-			if (vm.isAllowed(file)){
-				vm.readFile(file).then(function (data) {
-					var data = data.split('base64,');
-					var type = data[0].replace('data:','').replace(';','');
-
-					vm.$scope.$emit('file.read',{ type:type, data: data[1] });
-				});
-				// promises.push(vm.readFile(file));
-			}
-		});
-
-		// vm.$q.all(promises).then(function (responses) {
-		// 	console.log(responses)
-		// 	vm.data = responses;
-		// });
+				if (vm.isAllowed(file)){
+					vm.readFile(file).then(function (data) {
+						var data = data.split('base64,');
+						var type = data[0].replace('data:','').replace(';','');
+						vm.$scope.onFileRead({ data:{ type:type, data: data[1] } });
+					});
+				}
+			});
 	};
 
 	angular.module('dropinput',[])
 
-	.directive('dropInput', function () {
+	.service('dropState', function () {
+		var vm = this;
+		vm.disabled = false;
+	})
+
+	.directive('dropInput', function (dropState) {
 		return {
 			restrict:'A',
-			scope:{},
+			scope:{
+				onFileRead:'&'
+			},
 			bindToController:{},
 			controller:DropController,
 			controllerAs:'drop',
@@ -95,12 +92,14 @@
 
 				el.addEventListener('dragenter', function (evt) {
 					evt.preventDefault();
-					evt.dataTransfer.dropEffect = 'copy';
+					if (!dropState.disabled){
+						evt.dataTransfer.dropEffect = 'copy';
+					}
 				});
 
 				el.addEventListener('dragover', function (evt) {
 					evt.preventDefault();
-					if (!el.classList.contains('on-drop')){
+					if (!el.classList.contains('on-drop') && !dropState.disabled){
 						el.classList.add('on-drop');
 					}
 				});
@@ -116,7 +115,9 @@
 					evt.preventDefault();
 					el.classList.remove('on-drop');
 
-					$controller.handleDrop(evt);
+					if (!dropState.disabled){
+						$controller.handleDrop(evt);
+					}
 				});
 			}
 		}

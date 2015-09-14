@@ -6,22 +6,24 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter, $firebaseArray) {
+  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter, $firebaseArray, $timeout, dropState) {
     var vm = this;
     vm.ref = new Firebase('http://sweltering-fire-8163.firebaseIO.com/images');
     // vm.images = $firebaseArray(vm.ref.limitToLast(4));
     vm.images = $firebaseArray(vm.ref);
 
-
     vm._album = ALBUM;
     // vm.album = Imagestore;
 
+    vm.dropState = dropState;
     vm.service = $http;
     vm.$scope = $scope;
     vm.$state = $state;
     vm.$filter = $filter;
+    vm.$timeout = $timeout;
     vm.childVisible = false;
     vm.importString = null;
+    vm.showTools = false;
 
     // vm.getAlbum();
     // vm.$scope.$on('import.idlist', function (evt, data) {
@@ -39,7 +41,37 @@
     });
 
 
+    // vm.$scope.$on('drop', function (evt, data) {
+    //   vm.showTools = false;
+    //   console.log(data);
+    //   $timeout(function(){});
+    // });
+
   }
+
+
+  MainController.prototype.importFile = function (data){
+console.log(this)
+    console.log(arguments);
+  }
+
+  MainController.prototype.imageDragStart = function (image) {
+    var vm = this;
+    vm.showTools = true;
+    vm.dropState.disabled = true;
+    vm.dragImage = image;
+    vm.$timeout(function(){});
+  };
+
+  MainController.prototype.imageDragEnd = function (image) {
+    var vm = this;
+
+    vm.dropState.disabled = false;
+    vm.showTools = false;
+    vm.dragImage = null;
+    vm.$timeout(function(){});
+  };
+
   // MainController.prototype.importFromString = function (string) {
   //   var vm = this;
   //   if (string){
