@@ -6,13 +6,15 @@
   .controller('MainController', MainController);
 
   /** @ngInject */
-  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter, $firebaseObject) {
+  function MainController($scope, $http, ALBUM, Imagestore, $state, $filter, $firebaseArray) {
     var vm = this;
-    vm.ref = new Firebase('http://sweltering-fire-8163.firebaseIO.com');
-    vm.data = $firebaseObject(vm.ref);
+    vm.ref = new Firebase('http://sweltering-fire-8163.firebaseIO.com/images');
+    // vm.images = $firebaseArray(vm.ref.limitToLast(4));
+    vm.images = $firebaseArray(vm.ref);
+
 
     vm._album = ALBUM;
-    vm.album = Imagestore;
+    // vm.album = Imagestore;
 
     vm.service = $http;
     vm.$scope = $scope;
@@ -21,99 +23,135 @@
     vm.childVisible = false;
     vm.importString = null;
 
-    vm.$scope.$on('import.idlist', function (evt, data) {
-      evt.stopPropagation();
-      vm.importImages(data);
-    });
+    // vm.getAlbum();
+    // vm.$scope.$on('import.idlist', function (evt, data) {
+    //   evt.stopPropagation();
+    //   vm.importImages(data);
+    // });
 
     vm.$scope.$on('file.read', function (evt, data) {
       evt.stopPropagation();
-
-      vm.upload(data).then(function (response) {
-        console.log('image loaded', response);
-      });
+      vm.upload(data);
     });
 
     vm.$scope.$on('$stateChangeStart', function (f,to) {
       vm.childVisible = to.name === 'root.image';
     });
 
-    vm.getAlbum();
+
   }
+  // MainController.prototype.importFromString = function (string) {
+  //   var vm = this;
+  //   if (string){
+  //     var id = vm.$filter('imageId')(string);
+  //     console.log(id);
+  //     if (id && /^[A-Za-z0-9]{3,12}$/.test(id)){
 
-  MainController.prototype.importFromString = function (string) {
-    var vm = this;
-    if (string){
-      var id = vm.$filter('imageId')(string);
-      console.log(id);
-      if (id && /^[A-Za-z0-9]{3,12}$/.test(id)){
+  //       vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
+  //         vm.importString = null;
+  //         vm.addImage(response.data.data);
+  //         vm.addAlbumImages([id]);
+  //       }, function () {
+  //         alert('voi perde teiän kanssa');
+  //       });
+  //     }
+  //   }
+  // };
 
-        vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
-          vm.importString = null;
-          vm.addImage(response.data.data);
-          vm.addAlbumImages([id]);
-        }, function () {
-          alert('voi perde teiän kanssa');
-        });
-      }
-    }
-  };
-
-  MainController.prototype.showImage = function (image) {
-    var vm = this;
-    vm.$state.go('root.image', {id:image.id});
-  };
+  // MainController.prototype.showImage = function (image) {
+  //   var vm = this;
+  //   vm.$state.go('root.image', {id:image.id});
+  // };
 
   MainController.prototype.getAlbum = function () {
     var vm = this;
     return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {
-      console.log(response.data.data);
-      vm.album.set(response.data.data);
-      return response.data;
-    })
-  };
 
-  MainController.prototype.addAlbumImages = function (idlist) {
-    var vm = this;
-    return vm.service.put('https://api.imgur.com/3/album/'+vm._album.hash+'/add', {
-      ids:idlist
+      // vm.data.images
+      response.data.data.images.forEach(function(image){
+        vm.addImage(image);
+      });
+      // vm.data.$save();
+
+      // vm.album.set(response.data.data);
+      return response.data;
     });
   };
 
-  MainController.prototype.removeAlbumImages = function (idlist) {
+  MainController.prototype.removeImage = function (image) {
     var vm = this;
+    console.log(image);
+    if (image.deletehash){
+      vm.deleteFromImgur(image.deletehash);
+    }
+    vm.images.$remove(image);
+  };
+
+  MainController.prototype.deleteFromImgur = function (idlist) {
+    if (!_.isArray(idlist)){
+      idlist = [idlist];
+    }
+
     return vm.service.delete('https://api.imgur.com/3/album/'+vm._album.hash+'/remove_images', {
       params: {
         ids: idlist
       }
-    }).then(function (response) {
-      if (response.data.status === 200){
-        _.forEach(idlist, function (id) {
-          _.remove(vm.album.images, {id: id});
-        });
-      } else {
-        alert('pere');
-      }
-    })
-  };
-
-  MainController.prototype.importImages = function (idlist) {
-    var vm = this;
-    return vm.addAlbumImages(idlist).then(function (response) {
-      if (response.data.status === 200){
-        _.forEach(idlist, function (id) {
-          vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
-            vm.addImage(response.data.data);
-          });
-        })
-      }
     });
   };
 
+  // MainController.prototype.addAlbumImages = function (idlist) {
+  //   var vm = this;
+  //   return vm.service.put('https://api.imgur.com/3/album/'+vm._album.hash+'/add', {
+  //     ids:idlist
+  //   });
+  // };
+
+  // MainController.prototype.removeAlbumImages = function (idlist) {
+  //   var vm = this;
+  //   return vm.service.delete('https://api.imgur.com/3/album/'+vm._album.hash+'/remove_images', {
+  //     params: {
+  //       ids: idlist
+  //     }
+  //   }).then(function (response) {
+  //     if (response.data.status === 200){
+  //       _.forEach(idlist, function (id) {
+  //         _.remove(vm.album.images, {id: id});
+  //       });
+  //     } else {
+  //       alert('pere');
+  //     }
+  //   })
+  // };
+
+  // MainController.prototype.importImages = function (idlist) {
+  //   var vm = this;
+  //   return vm.addAlbumImages(idlist).then(function (response) {
+  //     if (response.data.status === 200){
+  //       _.forEach(idlist, function (id) {
+  //         vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
+  //           vm.addImage(response.data.data);
+  //         });
+  //       })
+  //     }
+  //   });
+  // };
+
+
+  // MainController.prototype.addImage = function (image) {
+  //   var vm = this;
+  //   vm.album.images.unshift(image);
+  // };
+
+  MainController.prototype.importImage = function (imageId) {
+    var vm = this;
+    vm.service.get('https://api.imgur.com/3/image/'+id).then(function (response) {
+      vm.addImage(response.data.data);
+    });
+  };
 
   MainController.prototype.addImage = function (image) {
     var vm = this;
-    vm.album.images.unshift(image);
+    vm.images.$add(image);
   };
 
 
@@ -124,21 +162,30 @@
       album: vm._album.hash,
       image: image.data,
       type: image.type
-    }).then(function (response) {
+    }).then(function(response){
       if (response.data.status === 200){
-        var imageData = response.data.data;
-        vm.addImage(imageData);
-
-        return vm.service.post('https://api.imgur.com/3/image/'+imageData.deletehash, {
-          description: '#'+imageData.deletehash+'#',
-          title:''
-        }).then(function (updateResponse) {
-          return response.data;
-        });
-      } else {
-        return false;
+        vm.addImage(response.data.data);
       }
     });
+    // return vm.service.post('https://api.imgur.com/3/image', {
+    //   album: vm._album.hash,
+    //   image: image.data,
+    //   type: image.type
+    // }).then(function (response) {
+    //   if (response.data.status === 200){
+    //     var imageData = response.data.data;
+    //     vm.addImage(imageData);
+
+    //     return vm.service.post('https://api.imgur.com/3/image/'+imageData.deletehash, {
+    //       description: '#'+imageData.deletehash+'#',
+    //       title:''
+    //     }).then(function (updateResponse) {
+    //       return response.data;
+    //     });
+    //   } else {
+    //     return false;
+    //   }
+    // });
   };
 
 })();

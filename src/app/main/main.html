@@ -31,11 +31,11 @@
       <div class="image-wrapper col-xs-12">
         <div class="image-container"
           ng-right-click="main.showImage(image)"
-          ng-repeat="(imageIndex, image) in main.album.images track by image.id">
+          ng-repeat="(imageIndex, image) in main.images track by image.$id">
           <img image-loader="image" size="b">
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
           <div class="image-actions">
-            <i class="ion-ios-trash-outline" ng-click="main.removeAlbumImages([image.id])"></i>
+            <i class="ion-ios-trash-outline" ng-click="main.removeImage(image)"></i>
           </div>
         </div>
       </div>
