@@ -15,6 +15,7 @@
 				el.addEventListener('dragover', function (evt) {
 					evt.preventDefault();
 					evt.stopPropagation();
+					evt.dataTransfer.dropEffect = 'move';
 
 					if (!el.classList.contains('on-drag')){
 						el.classList.add('on-drag');
@@ -55,6 +56,7 @@
 					if ($scope.dragEnd)	$scope.dragEnd();
 				});
 				el.addEventListener('dragstart', function (evt) {
+					evt.dataTransfer.dragEffect = 'move';
 					evt.dataTransfer.setData('type',el.getAttribute('data-type'));
 					evt.dataTransfer.setData('$id',el.getAttribute('data-drag'));
 					if ($scope.dragStart)	$scope.dragStart();

@@ -1,11 +1,12 @@
 (function () {
 	'use strict';
 
-	function DropController($q, $scope, $filter){
+	function DropController($q, $http, $scope, $filter){
 		var vm = this;
 		vm.$scope = $scope;
 		vm.$q = $q;
 		vm.$filter = $filter;
+		vm.$http = $http;
 		vm.allowedTypes = ['image/gif','image/jpg','image/png','image/jpeg'];
 		vm.maxFileSize = 10 * 1014 * 1024;
 	}
@@ -40,6 +41,32 @@
 		}
 	};
 
+	DropController.prototype.loadRemoteImage = function (url) {
+		var vm = this;
+		var d = vm.$q.defer();
+		var img = new Image();
+
+		img.onload = function () {
+			var canvas = document.createElement('canvas');
+			canvas.width = img.width;
+			canvas.height = img.height;
+
+			var ctx = canvas.getContext('2d');
+			console.log(img.type);
+
+			ctx.drawImage(img,0,0);
+			d.resolve(canvas.toDataURL('image/png'));
+		}
+
+		img.onerror = function () {
+			d.reject();
+		}
+
+		img.src = url;
+
+		return d.promise;
+	};
+
 	DropController.prototype.handleDrop = function (evt) {
 		var vm = this;
 		var imageImports = [];
@@ -51,6 +78,7 @@
 
 				item.getAsString(function (result) {
 					var image = vm.findImage(result);
+					vm.loadRemoteImage(image);
 					d.resolve(image);
 				});
 			});

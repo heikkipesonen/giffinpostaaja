@@ -12,14 +12,15 @@
 				var timer = null;
 				ripple.classList.add('ripple-effect');
 
-				if (el.firstChild){
-					el.insertBefore(ripple, el.firstChild);
-				} else {
-					el.appendChild(ripple);
-				}
 
 				function handleClick(evt) {
 					evt.preventDefault();
+
+					// if (el.firstChild){
+						el.insertBefore(ripple, el.firstChild);
+					// } else {
+					// 	el.appendChild(ripple);
+					// }
 
 					el.classList.remove('ripple-active');
 					el.classList.add('ripple-active');
@@ -32,7 +33,8 @@
 
 					timer = setTimeout(function () {
 						el.classList.remove('ripple-active');
-					}, 500);
+						el.removeChild(ripple);
+					}, 1000);
 				}
 
 				el.addEventListener('click', handleClick);
