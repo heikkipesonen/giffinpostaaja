@@ -1,0 +1,19 @@
+/**
+ * rename this file as index.constants.js
+ * @return {[type]} [description]
+ */
+(function () {
+	'use strict';
+
+	angular
+	.module('gifseina')
+
+	.constant('ALBUM',{
+		id:'ALBUM_ID',
+		hash:'IMGUR_ALBUM_DELETE_HASH'
+	})
+
+	.constant('APIKEY', '')
+	.constant('APISECRET', '');
+
+})();
