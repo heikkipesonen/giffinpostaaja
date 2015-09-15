@@ -15,8 +15,8 @@ angular.module('imageLoader', [])
 		return function (url) {
 
 			if (url && url.indexOf('http://i.imgur.com/') > -1){
-				var id = url.replace(/[sbmlh]{1}\.(jpg|gif|png)/,'');
-				id = id.replace('http://i.imgur.com/','');
+				// var id = url.replace(/[sbmlh]{1}\.(jpg|gif|png)/,'');
+				var id = id.replace('http://i.imgur.com/','');
 				id = id.replace(/\.(jpg|gif|png|webm|gifv|mp4)/,'');
 
 				return id;
