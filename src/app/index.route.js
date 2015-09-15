@@ -34,15 +34,6 @@
         controller:'ImageController',
         controllerAs:'image'
       })
-
-      .state('root.import', {
-        resolve:{
-        },
-        url:'import',
-        templateUrl:'app/import/import.html',
-        controller:'ImportController',
-        controllerAs:'import'
-      })
       ;
 
     $urlRouterProvider.otherwise('/');

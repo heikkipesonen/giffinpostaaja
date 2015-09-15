@@ -13,6 +13,8 @@
     vm.images = $firebaseArray(vm.ref);
 
     vm._album = ALBUM;
+    vm._api_url = 'https://api.imgur.com/3';
+
     // vm.album = Imagestore;
 
     vm.dropState = dropState;
@@ -75,7 +77,7 @@
    */
   MainController.prototype.importImageFromImgur = function (imageId) {
     var vm = this;
-    vm.service.get('https://api.imgur.com/3/image/'+imageId).then(function (response) {
+    vm.service.get(vm._api_url+'/image/'+imageId).then(function (response) {
       vm.addImage(response.data.data);
     });
   };
@@ -104,7 +106,7 @@
     if (imageId){
       return vm.importImageFromImgur(imageId);
     } else {
-      return vm.service.post('https://api.imgur.com/3/image', {
+      return vm.service.post(vm._api_url+'/image', {
         image :url,
         type: 'URL',
         album: vm._album.hash
@@ -154,7 +156,7 @@
 
   MainController.prototype.getAlbum = function () {
     var vm = this;
-    return vm.service.get('https://api.imgur.com/3/album/'+vm._album.id).then(function (response) {
+    return vm.service.get(vm._api_url+'/album/'+vm._album.id).then(function (response) {
       response.data.data.images.forEach(function (image) {
         vm.addImage(image);
       });
@@ -193,7 +195,7 @@
       idlist = [idlist];
     }
 
-    return vm.service.delete('https://api.imgur.com/3/album/'+vm._album.hash+'/remove_images', {
+    return vm.service.delete(vm._api_url+'album/'+vm._album.hash+'/remove_images', {
       params: {
         ids: idlist
       }
@@ -207,7 +209,7 @@
    */
   MainController.prototype.deleteImgurImage = function (image) {
     var vm = this;
-    return vm.service.delete('https://api.imgur.com/3/image/'+image.deletehash).then(function (response) {
+    return vm.service.delete(vm._api_url+'/image/'+image.deletehash).then(function (response) {
       return response.data.data;
     });
   };
@@ -240,7 +242,7 @@
   MainController.prototype.upload = function (image) {
     var vm = this;
 
-    return vm.service.post('https://api.imgur.com/3/image', {
+    return vm.service.post(vm._api_url+'/image', {
       album: vm._album.hash,
       image: image.data,
       type: image.type
