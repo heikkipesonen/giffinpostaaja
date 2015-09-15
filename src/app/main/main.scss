@@ -21,25 +21,33 @@ header, .view-header-offset{
 
 .toolbar{
 	$toolbar-size: 64px;
-	$toolbar-color: #444;
+	$toolbar-color: #f7f7f7;
 
 	position: absolute;
-	width: $toolbar-size;
-	height: 100%;
-	// height: $toolbar-size;
-	top: 0;
-	// margin-top: -100px;
-	// margin-right: -100px;
+	// top:-$toolbar-size;
+	left:50%;
 	bottom: -$toolbar-size;
-	right: -$toolbar-size;
+
+	width: $toolbar-size * 4;
+	height: $toolbar-size;
+	// margin-top: -$toolbar-size/2;
+	margin-left: -$toolbar-size*2;
+	box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.6);
+	// width: $toolbar-size;
+	// height: 100%;
+	// height: $toolbar-size;
+	// top: 0;
+	// bottom: -$toolbar-size;
+	// right: -$toolbar-size;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	// right: -64px;
 	transition: 0.3s;
 
+
 	&.visible{
-		right: 0;
+		bottom:0;
 	}
 
 	// bottom: 0;
@@ -54,6 +62,12 @@ header, .view-header-offset{
 		width: $toolbar-size;
 		height: $toolbar-size;
 		line-height: $toolbar-size;
+		transition: 0.4s;
+
+		&.on-drag{
+			color: black;
+			background-color: $hilight-color;
+		}
 	}
 }
 

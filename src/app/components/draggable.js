@@ -15,11 +15,22 @@
 				el.addEventListener('dragover', function (evt) {
 					evt.preventDefault();
 					evt.stopPropagation();
+
+					if (!el.classList.contains('on-drag')){
+						el.classList.add('on-drag');
+					}
+				});
+
+				el.addEventListener('dragleave', function (evt) {
+					el.classList.remove('on-drag');
 				});
 
 				el.addEventListener('drop', function (evt) {
 					evt.stopPropagation();
 					evt.preventDefault();
+
+
+					el.classList.remove('on-drag');
 
 					if ($scope.onDrop){
 						$scope.onDrop()

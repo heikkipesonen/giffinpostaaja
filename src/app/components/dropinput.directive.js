@@ -30,7 +30,8 @@
 	};
 
 	DropController.prototype.findImage = function (string) {
-		var regex = new RegExp(/http\:\/\/i\.imgur\.com\/[A-Za-z0-9]+\.(jpg|png|gif)/);
+		var regex = new RegExp(/https?\:.+\.(jpg|gif|jpeg|png)/);
+		// var regex = new RegExp(/http\:\/\/i\.imgur\.com\/[A-Za-z0-9]+\.(jpg|png|gif)/);
 		var result = string.match(regex);
 		if (result){
 			return _.first(result);
@@ -55,9 +56,8 @@
 			});
 
 		vm.$q.all(imageImports).then(function (imageIds) {
-				var images = _.uniq(imageIds);
-				var idList = images.map(vm.$filter('imageId'));
-				vm.$scope.onFileRead({ data:{ type:'text',data:idList } });
+				var images = _.compact(_.uniq(imageIds));
+				vm.$scope.onFileRead({ data:{ type:'idlist',data:images } });
 			});
 
 		_.forEach(evt.dataTransfer.files, function (file) {

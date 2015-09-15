@@ -49,11 +49,29 @@
 
   }
 
+  MainController.prototype.importFromUrl = function (url) {
+    var img = new Image();
+    img.onload = function (evt) {
+      console.log(evt);
+    }
+    img.src = url;
+    // var reader = new FileReader();
+    // reader.onload = function (evt){
+    //   console.log(evt);
+    // }
+    // reader.readAsDataURL(url);
+  };
+
 
   MainController.prototype.importFile = function (data){
+    var vm = this;
 console.log(this)
     console.log(arguments);
-  }
+
+    if (data.type === 'idlist'){
+      _.forEach(data, vm.importFromUrl, vm);
+    }
+  };
 
   MainController.prototype.imageDragStart = function (image) {
     var vm = this;
