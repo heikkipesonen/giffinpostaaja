@@ -33,8 +33,7 @@
           draggable="true"
           drag-start="main.imageDragStart(image)"
           drag-end="main.imageDragEnd(image)"
-          ng-right-click="main.showImage(image)"
-          ng-repeat="(imageIndex, image) in main.images track by image.$id">
+          ng-repeat="(imageIndex, image) in main.images | orderBy:'-added' track by image.$id">
           <img image-loader="image" size="b">
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{image.link}}[/img]"></div>
         </div>
@@ -45,6 +44,13 @@
   <div class="toolbar" ng-class="{'visible' : main.showTools}">
     <div class="tool" droppable="true" on-drop="main.removeImage(main.dragImage)">
       <i class="ion-ios-trash-outline"></i>
+    </div>
+  </div>
+
+  <div class="import-input" ng-class="{'visible' : main.importVisible}">
+    <div class="input-container">
+      <input id="import-input" ng-blur="main.importDone()" type="text" name="name" ng-model="main.importString" ng-class="{'has-value' : image.importString}">
+      <label>Import</label>
     </div>
   </div>
 </div>

@@ -31,8 +31,7 @@
 	};
 
 	DropController.prototype.findImage = function (string) {
-		var regex = new RegExp(/https?\:.+\.(jpg|gif|jpeg|png)/);
-		// var regex = new RegExp(/http\:\/\/i\.imgur\.com\/[A-Za-z0-9]+\.(jpg|png|gif)/);
+		var regex = new RegExp(/(https?:\/\/.*?\.(?:png|jpg|gif|jpeg))/i);
 		var result = string.match(regex);
 		if (result){
 			return _.first(result);
@@ -41,31 +40,6 @@
 		}
 	};
 
-	DropController.prototype.loadRemoteImage = function (url) {
-		var vm = this;
-		var d = vm.$q.defer();
-		var img = new Image();
-
-		img.onload = function () {
-			var canvas = document.createElement('canvas');
-			canvas.width = img.width;
-			canvas.height = img.height;
-
-			var ctx = canvas.getContext('2d');
-			console.log(img.type);
-
-			ctx.drawImage(img,0,0);
-			d.resolve(canvas.toDataURL('image/png'));
-		}
-
-		img.onerror = function () {
-			d.reject();
-		}
-
-		img.src = url;
-
-		return d.promise;
-	};
 
 	DropController.prototype.handleDrop = function (evt) {
 		var vm = this;
@@ -73,15 +47,14 @@
 
 
 		_.forEach(evt.dataTransfer.items, function (item) {
-				var d = vm.$q.defer();
-				imageImports.push(d.promise);
+			var d = vm.$q.defer();
+			imageImports.push(d.promise);
 
-				item.getAsString(function (result) {
-					var image = vm.findImage(result);
-					vm.loadRemoteImage(image);
-					d.resolve(image);
-				});
+			item.getAsString(function (result) {
+				var image = vm.findImage(result);
+				d.resolve(image);
 			});
+		});
 
 		vm.$q.all(imageImports).then(function (imageIds) {
 				var images = _.compact(_.uniq(imageIds));
