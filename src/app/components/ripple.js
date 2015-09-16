@@ -14,7 +14,7 @@
 
 
 				function handleClick(evt) {
-					evt.preventDefault();
+					// evt.preventDefault();
 
 					// if (el.firstChild){
 						el.insertBefore(ripple, el.firstChild);

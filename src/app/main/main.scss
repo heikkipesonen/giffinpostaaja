@@ -1,5 +1,9 @@
 $hilight-color: #FF9D43;
 
+.hilight{
+	color: $hilight-color;
+}
+
 header, .view-header-offset{
 	padding-top: 100px;
 	padding-bottom: 0px;
