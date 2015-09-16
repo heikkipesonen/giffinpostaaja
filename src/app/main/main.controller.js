@@ -62,16 +62,12 @@
    */
   MainController.prototype.importDone = function () {
     var vm = this;
-
     vm.importVisible = false;
-
-    var imageId = vm.$filter('imageId')(vm.importString);
-
-    if (imageId){
-      vm.importImageFromImgur(imageId);
-      vm.importString = '';
+    var url = vm.importString.trim();
+    vm.importString = '';
+    if (url) {
+      vm.importImageFromUrl(url);
     }
-    vm.$timeout(function(){});
   };
 
   /**
@@ -86,18 +82,6 @@
     });
   };
 
-
-  /**
-   * check whether an image link is an imgur link
-   * @param  {string}  url
-   * @return {Boolean}
-   */
-  MainController.prototype.isImgurLink = function (url){
-    var vm = this;
-    return vm.$filter('imageId')(url);
-  };
-
-
   /**
    * import any image from url
    * @param  {string} url
@@ -105,7 +89,7 @@
    */
   MainController.prototype.importImageFromUrl = function (url) {
     var vm = this;
-    var imageId = vm.isImgurLink(url);
+    var imageId = vm.$filter('imageId')(url);
 
     if (imageId){
       return vm.importImageFromImgur(imageId);
@@ -116,9 +100,7 @@
         album: vm._album.hash
       }).then(function (response) {
         if (response.data.status === 200){
-          return response.data.data;
-        } else {
-          return false;
+          vm.addImage(response.data.data);
         }
       });
     }
@@ -132,9 +114,8 @@
   MainController.prototype.importFile = function (data) {
     var vm = this;
     if (data.type === 'idlist'){
-      vm.$q.all(_.map(data.data, vm.importImageFromUrl, vm)).then(function(images){
-        vm.addImage(images)
-      });
+      // TODO: Heikki tarkasta toimiiko tämä...
+      _.map(data.data, vm.importImageFromUrl, vm);
     } else if (data.data && data.type) {
       vm.upload(data);
     }
