@@ -20,7 +20,6 @@
 						input.value = el.getAttribute('data-text');
 						input.focus();
 						input.select();
-						console.log(input.value);
 						document.execCommand('Copy');
 					} catch (e) {
 						alert(el.innerHTML)

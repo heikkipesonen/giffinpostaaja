@@ -16,31 +16,32 @@
 
       <div class="gradient-top col-xs-12"></div>
 
-      <div class="image-wrapper col-xs-12">
+      <div class="image-wrapper col-xs-12" layout="row">
         <div class="image-container"
           id="{{::image.$id}}"
           draggable="true"
           drag-start="main.imageDragStart(image)"
           drag-end="main.imageDragEnd(image)"
-          ng-repeat="(imageIndex, image) in main.images | orderBy:'-added' track by image.$id">
-          <img image-loader="::image" size="b">
+          ng-repeat="(imageIndex, image) in main.images | orderBy:'-added' track by image.$id"
+          ng-style="{'flex-basis' : (image.width / image.height) * 160 +'px'}">
+          <div image-loader="::image" size="m"></div>
           <div class="image-overlay ripple" copy-clipboard data-text="[img]{{::image.link}}[/img]"></div>
         </div>
       </div>
     </div>
   </section>
+</div>
 
-  <div class="toolbar" ng-class="{'visible' : main.showTools}">
-    <div class="tool" droppable="true" on-drop="main.removeImage(main.dragImage)">
-      <i class="ion-ios-trash-outline"></i>
-    </div>
+<div class="import-input" ng-class="{'visible' : main.importVisible}">
+  <div class="input-container">
+    <input id="import-input" ng-blur="main.importDone()" type="text" name="name" ng-model="main.importString" ng-class="{'has-value' : image.importString}">
+    <label ng-bind="main.importType.type"></label>
   </div>
+</div>
 
-  <div class="import-input" ng-class="{'visible' : main.importVisible}">
-    <div class="input-container">
-      <input id="import-input" ng-blur="main.importDone()" type="text" name="name" ng-model="main.importString" ng-class="{'has-value' : image.importString}">
-      <label>Import</label>
-    </div>
+<div class="toolbar" ng-class="{'visible' : main.showTools}">
+  <div class="tool" droppable="true" on-drop="main.removeImage(main.dragImage)">
+    <i class="ion-ios-trash-outline"></i>
   </div>
 </div>
 

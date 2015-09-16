@@ -28,13 +28,24 @@
     vm.showTools = false;
 
     vm.importVisible = false;
-    vm.importString = null;
+    vm.importString = '';
+    vm.defaultImportType = {type: 'Write something', value: null};
+    vm.importType = {name: 'Write something', value: null};
 
 
+    vm.inputFocused = false;
     document.addEventListener('keydown', function (evt) {
       vm.importVisible = true;
       vm.$timeout(function(){});
+
+      var letter = String.fromCharCode(evt.keyCode);
+      if (!vm.inputFocused && letter !== ''){
+        vm.importString += letter.toLowerCase();
+      }
+
+
       vm.$timeout(function(){
+        vm.inputFocused = true;
         document.getElementById('import-input').focus();
       }, 400);
     });
@@ -43,7 +54,16 @@
       if (evt.keyCode === 13 && vm.importString){
         vm.importDone();
       }
-    })
+
+      var type = vm.recognizeString(vm.importString);
+      if (type.type){
+        vm.importType = type;
+      } else {
+        vm.importType = angular.extend({}, vm.defaultImportType);
+      }
+
+      vm.$timeout(function(){});
+    });
 
     vm.$scope.$on('$stateChangeStart', function (f,to) {
       vm.childVisible = to.name === 'root.image';
@@ -51,9 +71,23 @@
   }
 
 
-  MainController.prototype.showInfo = function (evt, image) {
-    console.log(evt, image);
+  MainController.prototype.recognizeString = function (string) {
+    var type, value;
+    var image = _.first(string.match(/https?:\/\/.*?\.(?:png|jpg|gif|jpeg|gifv|webm)/i));
+    if (image){
+      type = 'image/url';
+      value = image;
+    } else if (/^[ a-zA-Z0-9\,\.\;\:]{3,}$/.test(string)){
+      type = 'tag';
+      value = _.map(string.split(/[\,\.\;\:]/), function (tag) { return tag.trim(); });
+    }
+
+    return {
+      type: type,
+      value: value
+    }
   };
+
 
   /**
    * import string has been set (on blur and keycode 13)
@@ -63,11 +97,15 @@
   MainController.prototype.importDone = function () {
     var vm = this;
     vm.importVisible = false;
-    var url = vm.importString.trim();
+    var stringData = vm.recognizeString( vm.importString.trim() );
     vm.importString = '';
-    if (url) {
-      vm.importImageFromUrl(url);
+
+    if (stringData.type === 'image/url') {
+      vm.importImageFromUrl(stringData.value);
     }
+
+    vm.importType = angular.extend({}, vm.defaultImportType);
+    vm.inputFocused = false;
   };
 
   /**
