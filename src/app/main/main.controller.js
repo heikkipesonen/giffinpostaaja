@@ -51,6 +51,10 @@
   }
 
 
+  MainController.prototype.showInfo = function (evt, image) {
+    console.log(evt, image);
+  };
+
   /**
    * import string has been set (on blur and keycode 13)
    * start importing process
